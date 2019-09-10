@@ -1,0 +1,2 @@
+# jsgames
+Simple javascript games
