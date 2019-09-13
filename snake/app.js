@@ -8,7 +8,7 @@ let parts = 1;
 let snakeWidth = 100;
 let snakeHeight = 10;
 
-let crawlSize = 5;
+let crawlSize = 10;
 let partSize = 10;
 
 let snakeXCoordinate = 100;
@@ -29,7 +29,7 @@ function getNewPartCoordinates(newDirection, prevPart) {
 	let newCoords = {};
 	
 	if (currDirection == Directions.RIGHT && newDirection == Directions.UP) {
-		newCoords.x = prevPart.getX() + crawlSize * (prevPart.getSize() - 1);
+		newCoords.x = prevPart.getX() + partSize * (prevPart.getSize() - 1);
 		newCoords.y = prevPart.getY() - crawlSize;
 		
 	} else if (currDirection == Directions.LEFT && newDirection == Directions.UP) {
@@ -64,8 +64,13 @@ function updateLastPartSize() {
 	if (tRoot.getNextPart() == null) {		
 		tRoot.setSize(tRoot.getSize() + 1);
 		rear = tRoot;
+	}	
+
+	if (parts > 1) {
+		let newCoords = computeXY(rear.getDirection(), rear.getX(), rear.getY());
+		rear.setX(newCoords.x);
+		rear.setY(newCoords.y);
 	}
-	
 }
 
 function updateFirstPartSize() {	
