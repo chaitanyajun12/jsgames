@@ -9,7 +9,6 @@ let snakeWidth = 100;
 let snakeHeight = 10;
 
 let crawlSize = 10;
-let partSize = 10;
 
 let snakeXCoordinate = 100;
 let snakeYCoordinate = 300;
@@ -29,16 +28,18 @@ function getNewPartCoordinates(newDirection, prevPart) {
 	let newCoords = {};
 	
 	if (currDirection == Directions.RIGHT && newDirection == Directions.UP) {
-		newCoords.x = prevPart.getX() + partSize * (prevPart.getSize() - 1);
+		// DONE
+		newCoords.x = prevPart.getX() + crawlSize * (prevPart.getSize() - 1);
 		newCoords.y = prevPart.getY() - crawlSize;
 		
 	} else if (currDirection == Directions.LEFT && newDirection == Directions.UP) {
 		newCoords.x = prevPart.getX() - crawlSize;
 		newCoords.y = prevPart.getY() - crawlSize * (prevPart.getSize() - 1);
 		
-	} else if (currDirection == Directions.RIGHT && newDirection == Directions.DOWN) {
-		newCoords.x = prevPart.getX() + crawlSize;
-		newCoords.y = prevPart.getY() + crawlSize * (prevPart.getSize() - 1);
+	} else if (currDirection == Directions.RIGHT && newDirection == Directions.DOWN) {		
+		// DONE
+		newCoords.x = prevPart.getX() + crawlSize * (prevPart.getSize() - 1);
+		newCoords.y = prevPart.getY() + crawlSize;
 		
 	} else if (currDirection == Directions.LEFT && newDirection == Directions.DOWN) {
 		newCoords.x = prevPart.getX() + crawlSize;
@@ -49,7 +50,10 @@ function getNewPartCoordinates(newDirection, prevPart) {
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.LEFT) {
 		
 	} else if (currDirection == Directions.UP && newDirection == Directions.RIGHT) {
-		
+		// STARTED
+		newCoords.x = prevPart.getX() + crawlSize;
+		newCoords.y = prevPart.getY();
+
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.RIGHT) {
 		
 	}
@@ -106,7 +110,7 @@ function computeXY(direction, x, y)
 			break;
 		case Directions.DOWN:
 			newCoords.x = x;
-			newCoords.y = y + crawlSize;
+			newCoords.y = y;
 			break;
 		case Directions.LEFT:
 			newCoords.x = x - crawlSize;
@@ -179,18 +183,18 @@ function drawParts() {
 
 		let height, width;
 		if (tRoot.getDirection() == Directions.RIGHT) {
-			height = 10;
-			width = partSize * tRoot.getSize();
+			height = crawlSize;
+			width = crawlSize * tRoot.getSize();
 		} else if (tRoot.getDirection() == Directions.LEFT) {
-			height = 10;
-			width = partSize * tRoot.getSize();
+			height = crawlSize;
+			width = crawlSize * tRoot.getSize();
 
 		} else if (tRoot.getDirection() == Directions.UP) {
-			width = 10;
-			height = partSize * tRoot.getSize();
+			width = crawlSize;
+			height = crawlSize * tRoot.getSize();
 		} else if (tRoot.getDirection() == Directions.DOWN) {
-			width = 10;
-			height = partSize * tRoot.getSize();
+			width = crawlSize;
+			height = crawlSize * tRoot.getSize();
 		}
 		
 		context.fillRect(tRoot.getX(), tRoot.getY(), width, height);
