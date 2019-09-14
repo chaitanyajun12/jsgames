@@ -174,7 +174,7 @@ function printPath() {
 		tRoot = tRoot.getNextPart();
 	}
 	
-	console.log("--------------------");
+	console.log("----------------------");
 }
 
 function drawParts() {	
