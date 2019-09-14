@@ -237,8 +237,7 @@ function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	printPath();
 	drawParts();
-
-	console.log("--------------------");
+	console.log("----------------------");
 }
 
 function initSnake() {	
