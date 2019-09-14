@@ -57,10 +57,10 @@ function getNewPartCoordinates(newDirection, prevPart) {
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.LEFT) {
 		
 	} else if (currDirection == Directions.UP && newDirection == Directions.RIGHT) {
-		// STARTED
-		newCoords.x = prevPart.getX() + crawlSize;
+		// DONE
+		newCoords.x = prevPart.getX() + (2 * crawlSize);
 		newCoords.y = prevPart.getY();
-		prevPart.setOffset(0);
+		prevPart.setOffset(crawlSize);
 
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.RIGHT) {
 		
@@ -94,6 +94,11 @@ function updateFirstPartSize() {
 		root = tRoot.getNextPart();
 		tRoot = null;
 		parts -= 1;
+		
+		if (parts > 1) {
+			root.setOffset(crawlSize);
+		}
+
 	} else {
 		tRoot.setSize(newSize);
 		root = tRoot;
@@ -115,7 +120,7 @@ function computeXY(direction, x, y, offset)
 			break;			
 		case Directions.UP:
 			newCoords.x = x;
-			newCoords.y = y - crawlSize;
+			newCoords.y = y - crawlSize + offset;
 			break;
 		case Directions.DOWN:
 			newCoords.x = x;
