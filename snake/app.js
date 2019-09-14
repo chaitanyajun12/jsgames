@@ -35,7 +35,6 @@ function getNewPartCoordinates(newDirection, prevPart) {
 	let newCoords = {};
 	
 	if (currDirection == Directions.RIGHT && newDirection == Directions.UP) {
-
 		newCoords.x = prevPart.getX() - (2* crawlSize);
 		newCoords.y = prevPart.getY() - crawlSize;
 
@@ -69,9 +68,9 @@ function getNewPartCoordinates(newDirection, prevPart) {
 		newCoords.y = prevPart.getY() - crawlSize;
 		
 	} else if (currDirection == Directions.UP && newDirection == Directions.RIGHT) {
-
 		newCoords.x = prevPart.getX() + (2 * crawlSize);
 		newCoords.y = prevPart.getY();
+		prevPart.setOffset(crawlSize);
 
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.RIGHT) {
 
