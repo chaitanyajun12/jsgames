@@ -1,21 +1,26 @@
-let crawlSpeed = 1000;
+/**
+ * Snake traversal logic
+ * @author Krishna Chaitanya M
+ */
+
+// Variables used for snake traversal
 let canvas;	
 let context;
-
-let currDir = Directions.RIGHT;
 let parts = 1;
-
-let snakeWidth = 100;
-let snakeHeight = 10;
-
-let crawlSize = 10;
-
-let snakeStartXCoordinate = 100;
-let snakeStartYCoordinate = 300;
-
 let crawlFunc;
-
 let root, rear;
+
+// Variables which can be used as settings
+let crawlSpeed = 500;
+let currDir = Directions.RIGHT;
+
+let snakeLength = 200;
+let snakeWidth = 10;
+
+let crawlSize = snakeWidth;
+
+let snakeStartXCoordinate = 200;
+let snakeStartYCoordinate = 300;
 
 function onLoad() {
 	canvas = document.getElementById("canvas");	
@@ -30,46 +35,53 @@ function getNewPartCoordinates(newDirection, prevPart) {
 	let newCoords = {};
 	
 	if (currDirection == Directions.RIGHT && newDirection == Directions.UP) {
-		// DONE
 		newCoords.x = prevPart.getX() - (2* crawlSize);
 		newCoords.y = prevPart.getY() - crawlSize;
 
 		prevPart.setX(prevPart.getX() - crawlSize);
-		prevPart.setOffset(crawlSize);
 		
 	} else if (currDirection == Directions.LEFT && newDirection == Directions.UP) {
-		newCoords.x = prevPart.getX() - crawlSize;
-		newCoords.y = prevPart.getY() - crawlSize * (prevPart.getSize() - 1);
+
+		newCoords.x = prevPart.getX();
+		newCoords.y = prevPart.getY() - crawlSize;
 		
 	} else if (currDirection == Directions.RIGHT && newDirection == Directions.DOWN) {		
-		// DONE
-		newCoords.x = prevPart.getX() + crawlSize * (prevPart.getSize() - 1);
-		newCoords.y = prevPart.getY() + crawlSize;
-		prevPart.setOffset(0);
+
+		newCoords.x = prevPart.getX() - (2* crawlSize);
+		newCoords.y = prevPart.getY() + (2 * crawlSize);
+
+		prevPart.setX(prevPart.getX() - crawlSize);
 		
 	} else if (currDirection == Directions.LEFT && newDirection == Directions.DOWN) {
-		newCoords.x = prevPart.getX() + crawlSize;
-		newCoords.y = prevPart.getY() - crawlSize * (prevPart.getSize() - 1);
-		prevPart.setOffset(0);
+
+		newCoords.x = prevPart.getX();
+		newCoords.y = prevPart.getY() + (2 * crawlSize);
 		
 	} else if (currDirection == Directions.UP && newDirection == Directions.LEFT) {
-		
+
+		newCoords.x = prevPart.getX() - crawlSize;
+		newCoords.y = prevPart.getY();
+
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.LEFT) {
+
+		newCoords.x = prevPart.getX() - crawlSize;
+		newCoords.y = prevPart.getY() - crawlSize;
 		
 	} else if (currDirection == Directions.UP && newDirection == Directions.RIGHT) {
-		// DONE
 		newCoords.x = prevPart.getX() + (2 * crawlSize);
 		newCoords.y = prevPart.getY();
 		prevPart.setOffset(crawlSize);
 
 	} else if (currDirection == Directions.DOWN && newDirection == Directions.RIGHT) {
-		
-		prevPart.setOffset(0);
+
+		newCoords.x = prevPart.getX() + (2 * crawlSize);
+		newCoords.y = prevPart.getY() - crawlSize;
 	}
 	
+	prevPart.setOffset(crawlSize);
+
 	return newCoords;
 }
-
 
 function updateLastPartSize() {
 
@@ -124,10 +136,10 @@ function computeXY(direction, x, y, offset)
 			break;
 		case Directions.DOWN:
 			newCoords.x = x;
-			newCoords.y = y + crawlSize;
+			newCoords.y = y + crawlSize - offset;
 			break;
 		case Directions.LEFT:
-			newCoords.x = x - crawlSize;
+			newCoords.x = x - crawlSize + offset;
 			newCoords.y = y;
 			break;
 	}
@@ -137,6 +149,7 @@ function computeXY(direction, x, y, offset)
 
 function createNewPart(direction) {
 	
+	console.log("--" + direction + "--");
 	clearTimeout(crawlFunc);
 	currDir = direction;
 	
@@ -162,21 +175,17 @@ function onKeyUp(event) {
 
 	if (currDir == Directions.RIGHT || currDir == Directions.LEFT) {
 		if (event.keyCode == KeyCodes.UP) {
-			console.log("--UP--");
 			createNewPart(Directions.UP);
 
 		} else if (event.keyCode == KeyCodes.DOWN) {
-			console.log("--DOWN--");
 			createNewPart(Directions.DOWN);
 		}
 
 	} else if (currDir == Directions.UP || currDir == Directions.DOWN) {
 		if (event.keyCode == KeyCodes.LEFT) {
-			console.log("--LEFT--");
 			createNewPart(Directions.LEFT);
 
 		} else if (event.keyCode == KeyCodes.RIGHT) {
-			console.log("--RIGHT--");
 			createNewPart(Directions.RIGHT);
 		}
 
@@ -189,7 +198,6 @@ function printPath() {
 		console.log("size:" + tRoot.getSize() + ", dir: " + tRoot.getDirection() + ", x: " + tRoot.getX() + ", y: " + tRoot.getY());
 		tRoot = tRoot.getNextPart();
 	}
-  
 	console.log("----------------------");
 }
 
@@ -199,36 +207,43 @@ function drawParts() {
 
 		let height, width;
 		if (tRoot.getDirection() == Directions.RIGHT) {
-			console.log("draw right size: " + tRoot.getSize());
-			height = crawlSize;
+
+			height = snakeWidth;
 			width = crawlSize * tRoot.getSize();
 
+			// This transformation is to reflect from right to left
 			context.translate(tRoot.getX(), tRoot.getY());			 
 			context.scale(-1, 1);
 
 			context.fillRect(0, 0, width, height);
-			context.resetTransform();
 
 		} else if (tRoot.getDirection() == Directions.LEFT) {
-			height = crawlSize;
+
+			height = snakeWidth;
 			width = crawlSize * tRoot.getSize();
+			context.fillRect(tRoot.getX(), tRoot.getY(), width, height);
 
 		} else if (tRoot.getDirection() == Directions.UP) {
-			console.log("draw up size: " + tRoot.getSize());
-			width = crawlSize;
+
+			width = snakeWidth;
 			height = crawlSize * tRoot.getSize();
 			context.fillRect(tRoot.getX(), tRoot.getY(), width, height);
-			context.resetTransform();
 
 		} else if (tRoot.getDirection() == Directions.DOWN) {
-			width = crawlSize;
+
+			width = snakeWidth;
 			height = crawlSize * tRoot.getSize();
+
+			// This transformation is to reflect from down to up
+			context.translate(tRoot.getX(), tRoot.getY());			 
+			context.scale(1, -1);
+
+			context.fillRect(0, 0, width, height);
 		}
 		
-		// context.fillRect(tRoot.getX(), tRoot.getY(), width, height);
+		context.resetTransform();
 		tRoot = tRoot.getNextPart();
 	}
-
 }
 
 function crawl() {
@@ -244,41 +259,21 @@ function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	printPath();
 	drawParts();
-	console.log("----------------------");
 }
 
 function initSnake() {	
 	
-	window.addEventListener('keydown', onKeyUp, false);
-	
-	// context.fillStyle = "yellow";
-	// context.fillRect(snakeStartXCoordinate, snakeStartYCoordinate, snakeWidth, snakeHeight);
-
-	let snakeXCoordinate = snakeStartXCoordinate + snakeWidth;
-	let snakeYCoordinate = snakeStartYCoordinate;
-
-	// context.fillStyle = "blue";
-	// context.fillRect(snakeXCoordinate, snakeYCoordinate, snakeWidth, snakeHeight);
-
-	context.translate(snakeXCoordinate, snakeYCoordinate);
-
-	// context.fillStyle = "red";
-	// context.fillRect(0, 0, 10, 10);
-
-	context.scale(-1, 1);
-	
+	window.addEventListener('keydown', onKeyUp, false);	
 	context.fillStyle = "blue";
-	context.fillRect(0, 0, snakeWidth, snakeHeight);
 
-	context.resetTransform();
+	let partSize = snakeLength / crawlSize;
 
-	var part = new Part(10, Directions.RIGHT, null, 0);
-	part.setX(snakeXCoordinate);
-	part.setY(snakeYCoordinate);
+	var part = new Part(partSize, currDir, null, 0);
+	part.setX(snakeStartXCoordinate);
+	part.setY(snakeStartYCoordinate);
 	
 	root = part;
-	rear = part;	
-
+	rear = part;
 }
 
 function draw() {
