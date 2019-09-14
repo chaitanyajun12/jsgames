@@ -1,9 +1,10 @@
-var Part = function(size, direction, nextPart) {
+var Part = function(size, direction, nextPart, offset) {
 	
 	this.size = size
 	this.direction = direction
 	this.nextPart = nextPart;
-	
+	this.offset = offset;
+
 	// Starting coordinates of part
 	var xCoord, yCoord;
 		
@@ -42,11 +43,20 @@ var Part = function(size, direction, nextPart) {
 	function setY(yCoord) {
 		this.yCoord = yCoord;
 	}
+
+	function getOffset() {
+		return this.offset;
+	}
+
+	function setOffset(offset) {
+		this.offset = offset;
+	}
 	
 	return {
 		size,
 		direction,
 		nextPart,
+		offset,
 		getSize,
 		setSize,
 		getNextPart,
@@ -55,6 +65,8 @@ var Part = function(size, direction, nextPart) {
 		getX,
 		setX,
 		getY,
-		setY
+		setY,
+		getOffset,
+		setOffset
 	}
 };
