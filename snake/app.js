@@ -189,6 +189,8 @@ function printPath() {
 		console.log("size:" + tRoot.getSize() + ", dir: " + tRoot.getDirection() + ", x: " + tRoot.getX() + ", y: " + tRoot.getY());
 		tRoot = tRoot.getNextPart();
 	}
+  
+	console.log("----------------------");
 }
 
 function drawParts() {	
