@@ -9,18 +9,25 @@ let context;
 let parts = 1;
 let crawlFunc;
 let root, rear;
+let isGamePaused = false;
 
 // Variables which can be used as settings
-let crawlSpeed = 500;
+let crawlSpeed = 100;
 let currDir = Directions.RIGHT;
 
 let snakeLength = 200;
-let snakeWidth = 10;
+let snakeWidth = 20;
 
 let crawlSize = snakeWidth;
 
-let snakeStartXCoordinate = 200;
-let snakeStartYCoordinate = 300;
+let snakeStartXCoordinate = 0;
+let snakeStartYCoordinate = 0;
+
+let foodXCoordinate;
+let foodYCoordinate;
+
+let canvasWidth = 1250;
+let canvasHeight = 550;
 
 function onLoad() {
 	canvas = document.getElementById("canvas");	
@@ -150,7 +157,6 @@ function computeXY(direction, x, y, offset)
 function createNewPart(direction) {
 	
 	console.log("--" + direction + "--");
-	clearTimeout(crawlFunc);
 	currDir = direction;
 	
 	var newPart = new Part(1, direction, null, 0);
@@ -167,11 +173,21 @@ function createNewPart(direction) {
 	rear = newPart;
 	
 	reDraw();
-	crawlFunc = setTimeout(crawl, crawlSpeed);	
 }
 
-
 function onKeyUp(event) {
+	if (event.keyCode == KeyCodes.SPACE) {
+		if (isGamePaused) {
+			crawlFunc = setTimeout(crawl, crawlSpeed);
+			isGamePaused = false;
+		} else {
+			clearTimeout(crawlFunc);
+			isGamePaused = true;
+		}
+	}
+	
+	if (isGamePaused)
+		return;
 
 	if (currDir == Directions.RIGHT || currDir == Directions.LEFT) {
 		if (event.keyCode == KeyCodes.UP) {
@@ -188,7 +204,6 @@ function onKeyUp(event) {
 		} else if (event.keyCode == KeyCodes.RIGHT) {
 			createNewPart(Directions.RIGHT);
 		}
-
 	}
 }
 
@@ -246,6 +261,14 @@ function drawParts() {
 	}
 }
 
+function drawFood() {
+
+	context.fillStyle = "red";
+	context.fillRect(foodXCoordinate, foodYCoordinate, crawlSize, crawlSize);
+
+	context.fillStyle = "blue";
+}
+
 function crawl() {
 	updateFirstPartSize();
 	updateLastPartSize();
@@ -259,6 +282,7 @@ function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	printPath();
 	drawParts();
+	drawFood();
 }
 
 function initSnake() {	
@@ -272,6 +296,9 @@ function initSnake() {
 	part.setX(snakeStartXCoordinate);
 	part.setY(snakeStartYCoordinate);
 	
+	foodXCoordinate = Math.floor(Math.random() * (canvasWidth + 1));
+	foodYCoordinate = Math.floor(Math.random() * (canvasHeight + 1));
+
 	root = part;
 	rear = part;
 }

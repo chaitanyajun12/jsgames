@@ -6,6 +6,7 @@ const Directions = {
 };
 
 const KeyCodes = {	
+	SPACE: 32,
 	LEFT: 37,
 	UP: 38,
 	RIGHT: 39,
