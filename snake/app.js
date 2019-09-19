@@ -9,6 +9,7 @@ let context;
 let parts = 1;
 let crawlFunc;
 let root, rear;
+let foodRadius;
 let isGamePaused = false;
 
 // Variables which can be used as settings
@@ -26,12 +27,18 @@ let snakeStartYCoordinate = 0;
 let foodXCoordinate;
 let foodYCoordinate;
 
-let canvasWidth = 1250;
-let canvasHeight = 550;
+let canvasWidth;
+let canvasHeight;
 
 function onLoad() {
 	canvas = document.getElementById("canvas");	
 	context = canvas.getContext("2d");
+
+	canvas.width = document.body.clientWidth;
+	canvas.height = document.body.clientHeight;
+
+	canvasWidth = canvas.width;
+	canvasHeight = canvas.height;
 
 	draw();
 }
@@ -264,7 +271,8 @@ function drawParts() {
 function drawFood() {
 
 	context.fillStyle = "red";
-	context.fillRect(foodXCoordinate, foodYCoordinate, crawlSize, crawlSize);
+	context.arc(foodXCoordinate, foodYCoordinate, crawlSize / 2, 0, 2 * Math.PI);
+	context.fill();
 
 	context.fillStyle = "blue";
 }
@@ -285,19 +293,31 @@ function reDraw() {
 	drawFood();
 }
 
+function resizeCanvas() {
+	clearTimeout(crawlFunc);
+	onLoad();
+}
+
 function initSnake() {	
 	
-	window.addEventListener('keydown', onKeyUp, false);	
+	window.addEventListener('resize', resizeCanvas, false);
+	window.addEventListener('keydown', onKeyUp, false);
 	context.fillStyle = "blue";
 
 	let partSize = snakeLength / crawlSize;
+	foodRadius = snakeWidth / 2;
 
 	var part = new Part(partSize, currDir, null, 0);
 	part.setX(snakeStartXCoordinate);
 	part.setY(snakeStartYCoordinate);
-	
-	foodXCoordinate = Math.floor(Math.random() * (canvasWidth + 1));
-	foodYCoordinate = Math.floor(Math.random() * (canvasHeight + 1));
+
+	let minFoodXCoord = foodRadius;
+	let maxFoodXCoord = canvasWidth - foodRadius;
+	let minFoodYCoord = foodRadius;
+	let maxFoodYCoord = canvasHeight - foodRadius;
+
+	foodXCoordinate = Math.floor(Math.random() * (maxFoodXCoord + 1)) + minFoodXCoord;
+	foodYCoordinate = Math.floor(Math.random() * (maxFoodYCoord + 1)) + minFoodYCoord;
 
 	root = part;
 	rear = part;
@@ -305,5 +325,5 @@ function initSnake() {
 
 function draw() {
 	initSnake();
-	setTimeout(crawl, crawlSpeed);
+	crawlFunc = setTimeout(crawl, crawlSpeed);
 }
