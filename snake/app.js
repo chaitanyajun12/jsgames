@@ -290,21 +290,19 @@ function crawl() {
 
 function isSnakeEatingFood() {
 	if (currDir == Directions.RIGHT) {
-		console.log("Front X: " + root.getX());
-		console.log("Front y: " + root.getY());
-		console.log("food X: " + foodXCoordinate);
-		console.log("food y: " + foodYCoordinate);
-		console.log("------");
-		if (root.getX() >= foodXCoordinate && root.getX() <= foodXCoordinate + snakeWidth && foodYCoordinate == root.getY()) {
+		if (rear.getX() >= foodXCoordinate && rear.getX() <= foodXCoordinate + snakeWidth && foodYCoordinate == rear.getY()) {
 			return true;
 		}
 	} else if (currDir == Directions.UP) {
-
-		if (foodXCoordinate == root.getX() && foodYCoordinate + snakeWidth == root.getY()) {
+		if (foodXCoordinate == rear.getX() && rear.getY() >= foodYCoordinate && rear.getY() <= foodYCoordinate + snakeWidth) {
 			return true;
 		}
 	} else if (currDir == Directions.LEFT) {
-		if (foodXCoordinate + snakeWidth == root.getX() && foodYCoordinate == root.getY()) {
+		if (rear.getX() >= foodXCoordinate && rear.getX() <= foodXCoordinate + snakeWidth && foodYCoordinate == rear.getY()) {
+			return true;
+		}
+	} else if (currDir == Directions.DOWN) {
+		if (rear.getX() == foodXCoordinate && rear.getY() >= foodYCoordinate && rear.getY() <= foodYCoordinate + snakeWidth) {
 			return true;
 		}
 	}
@@ -314,12 +312,11 @@ function isSnakeEatingFood() {
 
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	// printPath();
+	printPath();
 	drawParts();
 	drawFood();
 
 	if (isSnakeEatingFood()) {
-		console.log("Eating food... :)");
 		root.setSize(root.getSize() + 1);
 		generateFoodCoordinates();
 	}
