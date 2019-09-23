@@ -11,6 +11,7 @@ let crawlFunc;
 let root, rear;
 let foodRadius;
 let isGamePaused = false;
+let stepsInCanavsWidth, stepsInCanavsHeight;
 
 // Variables which can be used as settings
 let crawlSpeed = 100;
@@ -36,9 +37,12 @@ function onLoad() {
 
 	canvas.width = document.body.clientWidth;
 	canvas.height = document.body.clientHeight;
-
+	
 	canvasWidth = canvas.width;
 	canvasHeight = canvas.height;
+
+	stepsInCanavsWidth = canvasWidth / crawlSize;
+	stepsInCanavsHeight = canvasHeight / crawlSize;
 
 	draw();
 }
@@ -269,10 +273,8 @@ function drawParts() {
 }
 
 function drawFood() {
-
 	context.fillStyle = "red";
-	context.arc(foodXCoordinate, foodYCoordinate, crawlSize / 2, 0, 2 * Math.PI);
-	context.fill();
+	context.fillRect(foodXCoordinate, foodYCoordinate, snakeWidth, snakeWidth);
 
 	context.fillStyle = "blue";
 }
@@ -311,13 +313,8 @@ function initSnake() {
 	part.setX(snakeStartXCoordinate);
 	part.setY(snakeStartYCoordinate);
 
-	let minFoodXCoord = foodRadius;
-	let maxFoodXCoord = canvasWidth - foodRadius;
-	let minFoodYCoord = foodRadius;
-	let maxFoodYCoord = canvasHeight - foodRadius;
-
-	foodXCoordinate = Math.floor(Math.random() * (maxFoodXCoord + 1)) + minFoodXCoord;
-	foodYCoordinate = Math.floor(Math.random() * (maxFoodYCoord + 1)) + minFoodYCoord;
+	foodXCoordinate = Math.floor(Math.random() * (stepsInCanavsWidth - 1)) * crawlSize;
+	foodYCoordinate = Math.floor(Math.random() * (stepsInCanavsHeight - 1)) * crawlSize;
 
 	root = part;
 	rear = part;
