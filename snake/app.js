@@ -288,16 +288,51 @@ function crawl() {
 	crawlFunc = setTimeout(crawl, crawlSpeed);
 }
 
+function isSnakeEatingFood() {
+	if (currDir == Directions.RIGHT) {
+		console.log("Front X: " + root.getX());
+		console.log("Front y: " + root.getY());
+		console.log("food X: " + foodXCoordinate);
+		console.log("food y: " + foodYCoordinate);
+		console.log("------");
+		if (root.getX() >= foodXCoordinate && root.getX() <= foodXCoordinate + snakeWidth && foodYCoordinate == root.getY()) {
+			return true;
+		}
+	} else if (currDir == Directions.UP) {
+
+		if (foodXCoordinate == root.getX() && foodYCoordinate + snakeWidth == root.getY()) {
+			return true;
+		}
+	} else if (currDir == Directions.LEFT) {
+		if (foodXCoordinate + snakeWidth == root.getX() && foodYCoordinate == root.getY()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	printPath();
+	// printPath();
 	drawParts();
 	drawFood();
+
+	if (isSnakeEatingFood()) {
+		console.log("Eating food... :)");
+		root.setSize(root.getSize() + 1);
+		generateFoodCoordinates();
+	}
 }
 
 function resizeCanvas() {
 	clearTimeout(crawlFunc);
 	onLoad();
+}
+
+function generateFoodCoordinates() {
+	foodXCoordinate = Math.floor(Math.random() * (stepsInCanavsWidth - 1)) * crawlSize;
+	foodYCoordinate = Math.floor(Math.random() * (stepsInCanavsHeight - 1)) * crawlSize;
 }
 
 function initSnake() {	
@@ -313,8 +348,7 @@ function initSnake() {
 	part.setX(snakeStartXCoordinate);
 	part.setY(snakeStartYCoordinate);
 
-	foodXCoordinate = Math.floor(Math.random() * (stepsInCanavsWidth - 1)) * crawlSize;
-	foodYCoordinate = Math.floor(Math.random() * (stepsInCanavsHeight - 1)) * crawlSize;
+	generateFoodCoordinates();
 
 	root = part;
 	rear = part;
