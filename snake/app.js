@@ -22,8 +22,8 @@ let snakeWidth = 20;
 
 let crawlSize = snakeWidth;
 
-let snakeStartXCoordinate = 0;
-let snakeStartYCoordinate = 0;
+let snakeStartXCoordinate = snakeWidth;
+let snakeStartYCoordinate = snakeWidth;
 
 let foodXCoordinate;
 let foodYCoordinate;
@@ -310,6 +310,39 @@ function isSnakeEatingFood() {
 	return false;
 }
 
+function createNewPartOnBoundaryCrossing(direction, x, y) {
+	currDir = direction;
+
+	var newPart = new Part(1, direction, null, 0);
+	rear.setNextPart(newPart);
+		
+	parts += 1;
+	
+	updateFirstPartSize();
+
+	newPart.setX(x);
+	newPart.setY(y);
+	
+	rear = newPart;
+}
+
+function processOnBoundaryCrossing() {
+
+	if (rear.getX() >= canvasWidth) {
+		createNewPartOnBoundaryCrossing(currDir, snakeWidth, rear.getY());
+
+	} else if (rear.getX() <= 0) {
+		createNewPartOnBoundaryCrossing(currDir, canvasWidth - snakeWidth, rear.getY());
+	}
+
+	if (rear.getY() >= canvasHeight) {
+		createNewPartOnBoundaryCrossing(currDir, rear.getX(), snakeWidth);
+
+	} else if (rear.getY() <= 0) {
+		createNewPartOnBoundaryCrossing(currDir, rear.getX(), canvasHeight - snakeWidth);
+	}
+}
+
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	printPath();
@@ -320,6 +353,8 @@ function reDraw() {
 		root.setSize(root.getSize() + 1);
 		generateFoodCoordinates();
 	}
+
+	processOnBoundaryCrossing();
 }
 
 function resizeCanvas() {
