@@ -6,6 +6,7 @@
 // Variables used for snake traversal
 let canvas;	
 let context;
+let scoreArea;
 let parts = 1;
 let crawlFunc;
 let root, rear;
@@ -35,12 +36,14 @@ let canvasHeight;
 function onLoad() {
 	canvas = document.getElementById("canvas");	
 	context = canvas.getContext("2d");
+	scoreArea = document.getElementById("infoarea");
 
-	canvas.width = document.body.clientWidth;
-	canvas.height = document.body.clientHeight;
-	
-	canvasWidth = canvas.width - (canvas.width % snakeWidth);
-	canvasHeight = canvas.height - (canvas.height % snakeWidth);
+	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
+	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
+	scoreArea.height = (document.body.clientHeight % snakeWidth) - snakeWidth;
+
+	canvasWidth = canvas.width;
+	canvasHeight = canvas.height;
 
 	stepsInCanavsWidth = canvasWidth / crawlSize;
 	stepsInCanavsHeight = canvasHeight / crawlSize;
@@ -346,9 +349,7 @@ function processOnBoundaryCrossing() {
 
 function updateScore() {
 	score += 1;
-	context.font = "30px Arial";
-	context.fillStyle = "white";
-	context.fillText("Score: " + score, 100, 100);
+	scoreArea.textContent = "Score: " + score;
 }
 
 function reDraw() {
@@ -358,6 +359,7 @@ function reDraw() {
 	drawFood();
 
 	if (isSnakeEatingFood()) {
+		updateScore();
 		root.setSize(root.getSize() + 1);
 		generateFoodCoordinates();
 	}
