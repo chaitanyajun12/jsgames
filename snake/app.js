@@ -12,6 +12,7 @@ let root, rear;
 let foodRadius;
 let isGamePaused = false;
 let stepsInCanavsWidth, stepsInCanavsHeight;
+let score;
 
 // Variables which can be used as settings
 let crawlSpeed = 100;
@@ -38,8 +39,8 @@ function onLoad() {
 	canvas.width = document.body.clientWidth;
 	canvas.height = document.body.clientHeight;
 	
-	canvasWidth = canvas.width;
-	canvasHeight = canvas.height;
+	canvasWidth = canvas.width - (canvas.width % snakeWidth);
+	canvasHeight = canvas.height - (canvas.height % snakeWidth);
 
 	stepsInCanavsWidth = canvasWidth / crawlSize;
 	stepsInCanavsHeight = canvasHeight / crawlSize;
@@ -227,7 +228,9 @@ function printPath() {
 	console.log("----------------------");
 }
 
-function drawParts() {	
+function drawParts() {
+	context.fillStyle = "blue";
+
 	var tRoot = root;
 	while (tRoot != null) {
 
@@ -275,8 +278,6 @@ function drawParts() {
 function drawFood() {
 	context.fillStyle = "red";
 	context.fillRect(foodXCoordinate, foodYCoordinate, snakeWidth, snakeWidth);
-
-	context.fillStyle = "blue";
 }
 
 function crawl() {
@@ -343,6 +344,13 @@ function processOnBoundaryCrossing() {
 	}
 }
 
+function updateScore() {
+	score += 1;
+	context.font = "30px Arial";
+	context.fillStyle = "white";
+	context.fillText("Score: " + score, 100, 100);
+}
+
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	printPath();
@@ -384,6 +392,8 @@ function initSnake() {
 
 	root = part;
 	rear = part;
+
+	score = 0;
 }
 
 function draw() {
