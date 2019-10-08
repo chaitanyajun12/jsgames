@@ -38,9 +38,20 @@ function onLoad() {
 	context = canvas.getContext("2d");
 	scoreArea = document.getElementById("infoarea");
 
-	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
+	/* canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
 	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
-	scoreArea.height = (document.body.clientHeight % snakeWidth) - snakeWidth;
+	scoreArea.height = (document.body.clientHeight % snakeWidth) - snakeWidth; */
+
+	let width = document.body.clientWidth;
+	canvas.width = width - ((width/5) - ((width/5) % snakeWidth));
+
+	let excessHeight = (document.body.clientHeight % snakeWidth);
+	let height = document.body.clientHeight - excessHeight;
+	canvas.height = height;
+	canvas.style.marginTop = excessHeight / 2;
+
+	//scoreArea.width = (width/5) + ((width/5) % snakeWidth);
+	//scoreArea.height = height;
 
 	canvasWidth = canvas.width;
 	canvasHeight = canvas.height;
@@ -354,12 +365,12 @@ function updateScore() {
 
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	printPath();
+	// printPath();
 	drawParts();
 	drawFood();
 
 	if (isSnakeEatingFood()) {
-		updateScore();
+		// updateScore();
 		root.setSize(root.getSize() + 1);
 		generateFoodCoordinates();
 	}
