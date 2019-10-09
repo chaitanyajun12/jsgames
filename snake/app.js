@@ -19,7 +19,7 @@ let score;
 let crawlSpeed = 100;
 let currDir = Directions.RIGHT;
 
-let snakeLength = 200;
+let snakeLength = 400;
 let snakeWidth = 20;
 
 let crawlSize = snakeWidth;
@@ -170,8 +170,6 @@ function computeXY(direction, x, y, offset)
 }
 
 function createNewPart(direction) {
-	
-	console.log("--" + direction + "--");
 	currDir = direction;
 	
 	var newPart = new Part(1, direction, null, 0);
@@ -193,10 +191,10 @@ function createNewPart(direction) {
 function onKeyUp(event) {
 	if (event.keyCode == KeyCodes.SPACE) {
 		if (isGamePaused) {
-			crawlFunc = setTimeout(crawl, crawlSpeed);
+			crawl();
 			isGamePaused = false;
 		} else {
-			clearTimeout(crawlFunc);
+			stopCrawling();
 			isGamePaused = true;
 		}
 	}
@@ -283,13 +281,20 @@ function drawFood() {
 	context.fillRect(foodXCoordinate, foodYCoordinate, snakeWidth, snakeWidth);
 }
 
+function stopCrawling() {
+	if (crawlFunc) {
+		clearTimeout(crawlFunc);
+		crawlFunc = null;
+	}
+}
+
 function crawl() {
+	crawlFunc = setTimeout(crawl, crawlSpeed);
+
 	updateFirstPartSize();
 	updateLastPartSize();
 
 	reDraw();
-
-	crawlFunc = setTimeout(crawl, crawlSpeed);
 }
 
 function isSnakeEatingFood() {
@@ -352,9 +357,40 @@ function updateScore() {
 	scoreArea.textContent = "Score: " + score;
 }
 
+function isGameOver() {
+	let tRoot = root;
+	while (tRoot != null) {
+		if (currDir == Directions.DOWN) {
+			if (rear.getY() == tRoot.getY() && rear != tRoot) {
+				if (tRoot.getDirection() == Directions.RIGHT) {
+					if (rear.getX() <= tRoot.getX() && rear.getX() >= tRoot.getX() - tRoot.getSize() * snakeWidth) {
+						console.log("Game over!");
+						return true;
+					}
+				} else if (tRoot.getDirection() == Directions.LEFT) {
+					if (rear.getX() >= tRoot.getX() && rear.getX() <= tRoot.getX() + tRoot.getSize() * snakeWidth) {
+						console.log("Game over!");
+						return true;
+					}
+				}
+			}
+		} else if (currDir == Directions.UP) {
+
+		} else if (currDir == Directions.LEFT) {
+
+		} else if (currDir == Directions.RIGHT) {
+			
+		}
+
+		tRoot = tRoot.getNextPart();
+	}
+	
+	return false;
+}
+
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	printPath();
+	// printPath();
 	drawParts();
 	drawFood();
 
@@ -365,10 +401,15 @@ function reDraw() {
 	}
 
 	processOnBoundaryCrossing();
+
+	if (isGameOver()) {
+		console.log("crawlFunc: " + crawlFunc);
+		stopCrawling();
+	}
 }
 
 function resizeCanvas() {
-	clearTimeout(crawlFunc);
+	stopCrawling();
 	onLoad();
 }
 
@@ -400,5 +441,5 @@ function initSnake() {
 
 function draw() {
 	initSnake();
-	crawlFunc = setTimeout(crawl, crawlSpeed);
+	crawl();
 }
