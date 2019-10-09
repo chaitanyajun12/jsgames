@@ -40,7 +40,7 @@ function onLoad() {
 
 	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
 	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
-	scoreArea.height = (document.body.clientHeight % snakeWidth) - snakeWidth;
+	scoreArea.height = document.body.clientHeight - canvas.height;
 
 	canvasWidth = canvas.width;
 	canvasHeight = canvas.height;
