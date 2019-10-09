@@ -360,23 +360,20 @@ function updateScore() {
 function isGameOver() {
 	let tRoot = root;
 	while (tRoot != null) {
-		if (currDir == Directions.DOWN) {
+		if (currDir == Directions.DOWN || currDir == Directions.UP) {
 			if (rear.getY() == tRoot.getY() && rear != tRoot) {
 				if (tRoot.getDirection() == Directions.RIGHT) {
 					if (rear.getX() <= tRoot.getX() && rear.getX() >= tRoot.getX() - tRoot.getSize() * snakeWidth) {
-						console.log("Game over!");
 						return true;
 					}
 				} else if (tRoot.getDirection() == Directions.LEFT) {
 					if (rear.getX() >= tRoot.getX() && rear.getX() <= tRoot.getX() + tRoot.getSize() * snakeWidth) {
-						console.log("Game over!");
 						return true;
 					}
 				}
 			}
-		} else if (currDir == Directions.UP) {
-
 		} else if (currDir == Directions.LEFT) {
+
 
 		} else if (currDir == Directions.RIGHT) {
 			
