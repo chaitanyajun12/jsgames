@@ -362,7 +362,11 @@ function isGameOver() {
 	while (tRoot != null) {
 		if (currDir == Directions.DOWN || currDir == Directions.UP) {
 			if (rear.getY() == tRoot.getY() && rear != tRoot) {
-				if (tRoot.getDirection() == Directions.RIGHT) {
+				if (tRoot.getDirection() == Directions.DOWN || tRoot.getDirection() == Directions.UP) {
+					if (rear.getX() == tRoot.getX()) {
+						return true;
+					}
+				} else if (tRoot.getDirection() == Directions.RIGHT) {
 					if (rear.getX() < tRoot.getX() && rear.getX() > tRoot.getX() - tRoot.getSize() * snakeWidth) {
 						return true;
 					}
@@ -373,8 +377,12 @@ function isGameOver() {
 				}
 			}
 		} else if (currDir == Directions.LEFT || currDir == Directions.RIGHT) {
-			if (rear.getX() == (tRoot.getX() + snakeWidth)) {
-				if (tRoot.getDirection() == Directions.DOWN) {
+			if (rear.getX() == tRoot.getX() && rear != tRoot) {
+				if (tRoot.getDirection() == Directions.RIGHT || tRoot.getDirection() == Directions.LEFT) {
+					if (rear.getY() == tRoot.getY()) {
+						return true;
+					}
+				} else if (tRoot.getDirection() == Directions.DOWN) {
 					if (rear.getY() < tRoot.getY() && rear.getY() > tRoot.getY() - tRoot.getSize() * snakeWidth) {
 						return true;
 					}
