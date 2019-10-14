@@ -17,7 +17,7 @@ let stepsInCanavsWidth, stepsInCanavsHeight;
 let score;
 
 // Variables which can be used as settings
-let crawlSpeed = 500;
+let crawlSpeed = 300;
 let currDir = Directions.RIGHT;
 
 let snakeLength = 400;
