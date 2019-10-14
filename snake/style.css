@@ -10,8 +10,7 @@ body {
 
 .info {
 	background-color: aquamarine;
-	padding-left: 20px;
+	text-align: center;
 	font-weight: bold;
-	font-size: 28px;
 	font-family: 'Lucida Console';
 }

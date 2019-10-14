@@ -12,11 +12,12 @@ let crawlFunc;
 let root, rear;
 let foodRadius;
 let isGamePaused = false;
+let gameOver = false;
 let stepsInCanavsWidth, stepsInCanavsHeight;
 let score;
 
 // Variables which can be used as settings
-let crawlSpeed = 100;
+let crawlSpeed = 500;
 let currDir = Directions.RIGHT;
 
 let snakeLength = 400;
@@ -36,11 +37,13 @@ let canvasHeight;
 function onLoad() {
 	canvas = document.getElementById("canvas");	
 	context = canvas.getContext("2d");
-	scoreArea = document.getElementById("infoarea");
 
 	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
 	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
-	scoreArea.height = document.body.clientHeight - canvas.height;
+
+	scoreArea = document.getElementById("infoarea");
+	scoreArea.style.height = document.body.clientHeight - canvas.height;
+	scoreArea.style.fontSize = scoreArea.style.height;
 
 	canvasWidth = canvas.width;
 	canvasHeight = canvas.height;
@@ -199,7 +202,7 @@ function onKeyUp(event) {
 		}
 	}
 	
-	if (isGamePaused)
+	if (isGamePaused || gameOver)
 		return;
 
 	if (currDir == Directions.RIGHT || currDir == Directions.LEFT) {
@@ -415,7 +418,7 @@ function reDraw() {
 	processOnBoundaryCrossing();
 
 	if (isGameOver()) {
-		console.log("crawlFunc: " + crawlFunc);
+		gameOver = true;
 		stopCrawling();
 	}
 }
