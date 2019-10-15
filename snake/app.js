@@ -7,6 +7,7 @@
 let canvas;	
 let context;
 let scoreArea;
+let gameOverLayout;
 let parts = 1;
 let crawlFunc;
 let root, rear;
@@ -17,7 +18,7 @@ let stepsInCanavsWidth, stepsInCanavsHeight;
 let score;
 
 // Variables which can be used as settings
-let crawlSpeed = 300;
+let crawlSpeed = 100;
 let currDir = Directions.RIGHT;
 
 let snakeLength = 400;
@@ -37,6 +38,7 @@ let canvasHeight;
 function onLoad() {
 	canvas = document.getElementById("canvas");	
 	context = canvas.getContext("2d");
+	gameOverLayout = document.getElementById("gameOverId");
 
 	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
 	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
@@ -403,6 +405,10 @@ function isGameOver() {
 	return false;
 }
 
+function showGameOver() {
+	gameOverLayout.style.display = "block";
+}
+
 function reDraw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	// printPath();
@@ -420,6 +426,7 @@ function reDraw() {
 	if (isGameOver()) {
 		gameOver = true;
 		stopCrawling();
+		showGameOver();
 	}
 }
 

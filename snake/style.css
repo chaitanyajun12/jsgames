@@ -14,3 +14,22 @@ body {
 	font-weight: bold;
 	font-family: 'Lucida Console';
 }
+
+.gameover {
+	background-color: burlywood;
+	height: 30%;
+	width: 50%;
+	border: 3px solid white;
+	margin: auto;
+	position: absolute;
+	top: 30%;
+	left: 25%;
+	display: none;
+}
+
+.header {
+	font-weight: bold;
+	font-family: 'Lucida Console';
+	font-size: 48px;
+	text-align: center;
+}
