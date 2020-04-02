@@ -35,23 +35,45 @@ let foodYCoordinate;
 let canvasWidth;
 let canvasHeight;
 
-function onLoad() {
-	canvas = document.getElementById("canvas");	
-	context = canvas.getContext("2d");
-	gameOverLayout = document.getElementById("gameOverId");
+function initScoreArea() {
+	scoreArea = document.createElement("div");
+	scoreArea.id = "infoarea";
+	scoreArea.className = "info";
+	scoreArea.innerHTML = "Score: 0";
 
-	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
-	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
-
-	scoreArea = document.getElementById("infoarea");
 	scoreArea.style.height = document.body.clientHeight - canvas.height;
 	scoreArea.style.fontSize = scoreArea.style.height;
+}
+
+function initCanvas() {
+	canvas = document.createElement("canvas");
+	canvas.className = "canvas";
+	canvas.id = "canvas";
+
+	context = canvas.getContext("2d");	
+	canvas.width = document.body.clientWidth - (document.body.clientWidth % snakeWidth);
+	canvas.height = document.body.clientHeight - (document.body.clientHeight % snakeWidth) - snakeWidth;
 
 	canvasWidth = canvas.width;
 	canvasHeight = canvas.height;
 
 	stepsInCanavsWidth = canvasWidth / crawlSize;
 	stepsInCanavsHeight = canvasHeight / crawlSize;
+}
+
+function initGameOverLayout() {
+	gameOverLayout = document.getElementById("gameOverId");
+}
+
+function onLoad() {
+	let game = document.getElementById("game");
+
+	initCanvas();
+	initScoreArea();
+	initGameOverLayout();
+
+	game.appendChild(canvas);
+	game.appendChild(scoreArea);
 
 	draw();
 }
