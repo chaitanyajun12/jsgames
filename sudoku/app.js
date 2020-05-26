@@ -74,7 +74,7 @@ function onKeyUp(event) {
 function selectSudokuBlock(sudokuBlock) {
     sudokuBlock.style.width = '46px';
     sudokuBlock.style.height = '46px';
-    sudokuBlock.style.border = '3px solid blue';
+    sudokuBlock.style.border = '3px solid red';
 }
 
 function unSelectSudokuBlock(sudokuBlock) {

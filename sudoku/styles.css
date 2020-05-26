@@ -3,6 +3,7 @@ body {
 }
 
 .game {
+    background-color: beige;
     display: inline-block;
 }
 
