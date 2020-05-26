@@ -99,15 +99,14 @@ function initSudokuBoard() {
     let sudokuBoard = document.getElementById('game');
     for (let i = 0; i < 9; i++) {
 
-        let sudokuRow = getSudokuRow();        
+        let sudokuRow = getSudokuRow();
         for (let j = 0; j < 9; j++) {
-        
             let sudokuBlock = getSudokuBlock(i, j);
+            sudokuRow.appendChild(sudokuBlock);
+
             if (i == 0 && j == 0) {
                 selectSudokuBlock(sudokuBlock);
             }
-
-            sudokuRow.appendChild(sudokuBlock);
         }
 
         sudokuBoard.appendChild(sudokuRow);
