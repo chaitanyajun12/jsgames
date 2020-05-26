@@ -45,6 +45,9 @@ function onKeyUp(event) {
         currY = currY + 1;
     }
 
+    currX = currX < 0 ? 8 : currX;
+    currY = currY < 0 ? 8 : currY; 
+
     currX = currX % 9;
     currY = currY % 9;
 
