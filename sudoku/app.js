@@ -17,18 +17,36 @@ function getSudokuRow() {
     return sudokuRow;
 }
 
-function getLabel(num) {
+function getLabelId(row, col) {
+    return 'label-row-' + row + '-col-' + col;
+}
+
+function getLabel(row, col) {
     let label = document.createElement('label');
+    label.id = getLabelId(row, col)
     label.className = 'number';
-    label.innerHTML = num;
     return label;
+}
+
+function setLabel(row, col, num) {
+    let label = document.getElementById(getLabelId(row, col));
+    label.innerHTML = num;
 }
 
 function isArrowKey(keyCode) {
     return keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT;
 }
 
+function isNumKey(keyCode) {
+    return (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105);
+}
+
 function onKeyUp(event) {
+    if (isNumKey(event.keyCode)) {
+        setLabel(currX, currY, String.fromCharCode(event.keyCode));
+        return;
+    }
+
     if (!isArrowKey(event.keyCode))
         return;
 
@@ -56,8 +74,8 @@ function onKeyUp(event) {
 }
 
 function selectSudokuBlock(sudokuBlock) {
-    sudokuBlock.style.width = '47px';
-    sudokuBlock.style.height = '47px';
+    sudokuBlock.style.width = '46px';
+    sudokuBlock.style.height = '46px';
     sudokuBlock.style.border = '3px solid red';
 }
 
@@ -71,11 +89,11 @@ function getSudokuBlockId(row, col) {
     return 'row-' + row + '-col-' + col;
 }
 
-function getSudokuBlock(row, col, num) {
+function getSudokuBlock(row, col) {
     let sudokuBlock = document.createElement('div');
     sudokuBlock.className = 'sudoku-block';
     sudokuBlock.id = getSudokuBlockId(row, col);
-    sudokuBlock.appendChild(getLabel(num));
+    sudokuBlock.appendChild(getLabel(row, col));
     return sudokuBlock;
 }
 
@@ -87,12 +105,10 @@ function initSudokuBoard() {
         let sudokuRowViews = [];
         
         for (let j = 0; j < 9; j++) {
-            let sudokuBlock = getSudokuBlock(i, j, j);
+            let sudokuBlock = getSudokuBlock(i, j);
 
             if (i == 0 && j == 0) {
-                sudokuBlock.style.width = '47px';
-                sudokuBlock.style.height = '47px';
-                sudokuBlock.style.border = '3px solid red';
+                selectSudokuBlock(sudokuBlock);
             }
 
             sudokuRowViews.push(sudokuBlock);  
