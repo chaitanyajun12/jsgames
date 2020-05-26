@@ -1,5 +1,3 @@
-var sudokuViewMatrix = [];
-
 const UP = 38;
 const DOWN = 40;
 const LEFT = 37;
@@ -76,7 +74,7 @@ function onKeyUp(event) {
 function selectSudokuBlock(sudokuBlock) {
     sudokuBlock.style.width = '46px';
     sudokuBlock.style.height = '46px';
-    sudokuBlock.style.border = '3px solid red';
+    sudokuBlock.style.border = '3px solid blue';
 }
 
 function unSelectSudokuBlock(sudokuBlock) {
@@ -101,22 +99,18 @@ function initSudokuBoard() {
     let sudokuBoard = document.getElementById('game');
     for (let i = 0; i < 9; i++) {
 
-        let sudokuRow = getSudokuRow();
-        let sudokuRowViews = [];
-        
+        let sudokuRow = getSudokuRow();        
         for (let j = 0; j < 9; j++) {
+        
             let sudokuBlock = getSudokuBlock(i, j);
-
             if (i == 0 && j == 0) {
                 selectSudokuBlock(sudokuBlock);
             }
 
-            sudokuRowViews.push(sudokuBlock);  
             sudokuRow.appendChild(sudokuBlock);
         }
 
         sudokuBoard.appendChild(sudokuRow);
-        sudokuViewMatrix.push(sudokuRowViews);
     }
 
     window.addEventListener('keyup', onKeyUp);
