@@ -15,10 +15,14 @@ body {
     width: 50px;
     height: 50px;
     border: 1px solid;
+    margin: 2px;
     background-color: aliceblue;
 }
 
 .number {
     font-size: 42px;
-    font-weight: 600;
+}
+
+.border {
+    border: 3px solid red;
 }
