@@ -84,15 +84,49 @@ function onKeyUp(event) {
 }
 
 function selectSudokuBlock(sudokuBlock) {
-    sudokuBlock.style.width = '46px';
-    sudokuBlock.style.height = '46px';
+    sudokuBlock.style.width = '45px';
+    sudokuBlock.style.height = '45px';
     sudokuBlock.style.border = '3px solid red';
+}
+
+function drawBordersBasedOnRowAndCols(sudokuBlock) {
+
+    let id = sudokuBlock.id;
+    let rowCol = getRowColFromSudokuBlockId(id);
+    
+    let row = rowCol.row;
+    let col = rowCol.col;
+    
+    if (col == 2 || col == 5) {
+        sudokuBlock.style.borderRight = '2px solid';
+    }
+
+    if (row == 2 || row == 5) {
+        sudokuBlock.style.borderBottom = '2px solid';
+    }
+
+    if (row == 3 || row == 6) {
+        sudokuBlock.style.borderTop = '2px solid';
+    }
+
+    if (col == 3 || col == 6) {
+        sudokuBlock.style.borderLeft = '2px solid';
+    }
 }
 
 function unSelectSudokuBlock(sudokuBlock) {
     sudokuBlock.style.width = '50px';
     sudokuBlock.style.height = '50px';
     sudokuBlock.style.border = '';
+    drawBordersBasedOnRowAndCols(sudokuBlock);
+}
+
+function getRowColFromSudokuBlockId(id) {
+    let tokens = id.split('-');
+    return {
+        row: tokens[1],
+        col: tokens[3]
+    };
 }
 
 function getSudokuBlockId(row, col) {
@@ -101,21 +135,24 @@ function getSudokuBlockId(row, col) {
 
 function onSudokuBlockClick(event) {
     let id = event.target.id;
-    
+    let rowCol = getRowColFromSudokuBlockId(id);
+
     unSelectSudokuBlock(document.getElementById(getSudokuBlockId(currX, currY)));
     selectSudokuBlock(document.getElementById(id));
 
-    let tokens = id.split('-');
-    currX = tokens[1];
-    currY = tokens[3];
+    currX = rowCol.row;
+    currY = rowCol.col;
 }
 
 function getSudokuBlock(row, col) {
     let sudokuBlock = document.createElement('div');
+    
     sudokuBlock.className = 'sudoku-block';
     sudokuBlock.id = getSudokuBlockId(row, col);
     sudokuBlock.onclick = onSudokuBlockClick;
     sudokuBlock.appendChild(getLabel(row, col));
+
+    drawBordersBasedOnRowAndCols(sudokuBlock);
     return sudokuBlock;
 }
 
