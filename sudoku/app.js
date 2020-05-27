@@ -36,12 +36,12 @@ function isArrowKey(keyCode) {
     return keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT;
 }
 
-function isNumKey(keyCode) {
-    return (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105);
+function isSudokuNumKey(keyCode) {
+    return (keyCode > 48 && keyCode <= 57) || (keyCode > 96 && keyCode <= 105);
 }
 
 function onKeyUp(event) {
-    if (isNumKey(event.keyCode)) {
+    if (isSudokuNumKey(event.keyCode)) {
         setLabel(currX, currY, String.fromCharCode(event.keyCode));
         return;
     }
