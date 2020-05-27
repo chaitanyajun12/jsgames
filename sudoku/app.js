@@ -3,6 +3,7 @@ const DOWN = 40;
 const LEFT = 37;
 const RIGHT = 39
 
+var sudokuMatrix = [];
 var currX = 0, currY = 0;
 
 function onLoad() {
@@ -87,10 +88,22 @@ function getSudokuBlockId(row, col) {
     return 'row-' + row + '-col-' + col;
 }
 
+function onSudokuBlockClick(event) {
+    let id = event.target.id;
+    
+    unSelectSudokuBlock(document.getElementById(getSudokuBlockId(currX, currY)));
+    selectSudokuBlock(document.getElementById(id));
+
+    let tokens = id.split('-');
+    currX = tokens[1];
+    currY = tokens[3];
+}
+
 function getSudokuBlock(row, col) {
     let sudokuBlock = document.createElement('div');
     sudokuBlock.className = 'sudoku-block';
     sudokuBlock.id = getSudokuBlockId(row, col);
+    sudokuBlock.onclick = onSudokuBlockClick;
     sudokuBlock.appendChild(getLabel(row, col));
     return sudokuBlock;
 }
