@@ -1,7 +1,9 @@
 const UP = 38;
 const DOWN = 40;
 const LEFT = 37;
-const RIGHT = 39
+const RIGHT = 39;
+const BACKSPACE = 8;
+const DELETE = 46;
 
 var sudokuMatrix = [];
 var currX = 0, currY = 0;
@@ -40,9 +42,18 @@ function isSudokuNumKey(keyCode) {
     return (keyCode > 48 && keyCode <= 57) || (keyCode > 96 && keyCode <= 105);
 }
 
+function isBackspaceOrDelete(keyCode) {
+    return keyCode == BACKSPACE || keyCode == DELETE;
+}
+
 function onKeyUp(event) {
     if (isSudokuNumKey(event.keyCode)) {
         setLabel(currX, currY, String.fromCharCode(event.keyCode));
+        return;
+    }
+
+    if (isBackspaceOrDelete(event.keyCode)) {
+        setLabel(currX, currY, '');
         return;
     }
 
