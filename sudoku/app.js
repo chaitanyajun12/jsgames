@@ -24,7 +24,7 @@ function getLabelId(row, col) {
 
 function getLabel(row, col) {
     let label = document.createElement('label');
-    label.id = getLabelId(row, col)
+    label.id = getLabelId(row, col);
     label.className = 'number';
     return label;
 }
@@ -135,7 +135,13 @@ function getSudokuBlockId(row, col) {
 
 function onSudokuBlockClick(event) {
     let id = event.target.id;
+    if (id.indexOf('label') >= 0) {
+        id = event.target.parentElement.id;
+    }
+
     let rowCol = getRowColFromSudokuBlockId(id);
+    if (currX == rowCol.row && currY == rowCol.col)
+        return;
 
     unSelectSudokuBlock(document.getElementById(getSudokuBlockId(currX, currY)));
     selectSudokuBlock(document.getElementById(id));

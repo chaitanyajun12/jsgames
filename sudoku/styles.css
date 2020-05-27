@@ -2,6 +2,10 @@ body {
     text-align: center;
 }
 
+h1 {
+    font-family: cursive;
+}
+
 .game {
     background-color: beige;
     display: inline-block;
