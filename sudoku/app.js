@@ -22,10 +22,11 @@ function getLabelId(row, col) {
     return 'label-row-' + row + '-col-' + col;
 }
 
-function getLabel(row, col) {
+function getLabel(row, col, num) {
     let label = document.createElement('label');
     label.id = getLabelId(row, col);
     label.className = 'number';
+    label.innerHTML = num;
     return label;
 }
 
@@ -147,13 +148,13 @@ function onSudokuBlockClick(event) {
     currY = rowCol.col;
 }
 
-function getSudokuBlock(row, col) {
+function getSudokuBlock(row, col, num) {
     let sudokuBlock = document.createElement('div');
     
     sudokuBlock.className = 'sudoku-block';
     sudokuBlock.id = getSudokuBlockId(row, col);
     sudokuBlock.onclick = onSudokuBlockClick;
-    sudokuBlock.appendChild(getLabel(row, col));
+    sudokuBlock.appendChild(getLabel(row, col, num));
 
     drawBordersBasedOnRowAndCols(sudokuBlock);
     return sudokuBlock;
@@ -165,7 +166,8 @@ function initSudokuBoard() {
 
         let sudokuRow = getSudokuRow();
         for (let j = 0; j < 9; j++) {
-            let sudokuBlock = getSudokuBlock(i, j);
+        
+            let sudokuBlock = getSudokuBlock(i, j, "");
             sudokuRow.appendChild(sudokuBlock);
 
             if (i == 0 && j == 0) {
