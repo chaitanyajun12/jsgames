@@ -19,7 +19,7 @@ h1 {
 .sudoku-block {
     width: 50px;
     height: 50px;
-    border: 0.5px solid;
+    border: 0.4px solid;
     margin: 1px;
     background-color: aliceblue;
 }

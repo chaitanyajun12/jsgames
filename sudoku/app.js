@@ -84,9 +84,7 @@ function onKeyUp(event) {
 }
 
 function selectSudokuBlock(sudokuBlock) {
-    sudokuBlock.style.width = '45px';
-    sudokuBlock.style.height = '45px';
-    sudokuBlock.style.border = '3px solid red';
+    sudokuBlock.style.backgroundColor = 'lightgrey';
 }
 
 function drawBordersBasedOnRowAndCols(sudokuBlock) {
@@ -96,28 +94,27 @@ function drawBordersBasedOnRowAndCols(sudokuBlock) {
     
     let row = rowCol.row;
     let col = rowCol.col;
+    let gridBorder = '1.5px solid';
     
     if (col == 2 || col == 5) {
-        sudokuBlock.style.borderRight = '2px solid';
+        sudokuBlock.style.borderRight = gridBorder;
     }
 
     if (row == 2 || row == 5) {
-        sudokuBlock.style.borderBottom = '2px solid';
+        sudokuBlock.style.borderBottom = gridBorder;
     }
 
     if (row == 3 || row == 6) {
-        sudokuBlock.style.borderTop = '2px solid';
+        sudokuBlock.style.borderTop = gridBorder;
     }
 
     if (col == 3 || col == 6) {
-        sudokuBlock.style.borderLeft = '2px solid';
+        sudokuBlock.style.borderLeft = gridBorder;
     }
 }
 
 function unSelectSudokuBlock(sudokuBlock) {
-    sudokuBlock.style.width = '50px';
-    sudokuBlock.style.height = '50px';
-    sudokuBlock.style.border = '';
+    sudokuBlock.style.backgroundColor = 'aliceblue';
     drawBordersBasedOnRowAndCols(sudokuBlock);
 }
 
