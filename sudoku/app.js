@@ -173,11 +173,23 @@ function getRandomNumberInRange(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function getDifficultyRange(gameDifficulty) {
+    if (gameDifficulty == 'easy') {
+        return { minRange: 3, maxRange: 8, minNum: 3 };
+    } else if (gameDifficulty == 'medium') {
+        return { minRange: 2, maxRange: 5, minNum: 2};
+    } else if (gameDifficulty == 'hard') {
+        return { minRange: 1, maxRange: 3, minNum: 0};
+    }
+}
+
 // Easy - 3 to 8 filled
 // Medium - 2 to 5 filled
 // Hard - 1 to 3 filled
-function generateSudokuMatrix() {
+function generateSudokuMatrix(gameDifficulty) {
     initSudokuMatrix();
+
+    let range = getDifficultyRange(gameDifficulty);
 
     let rows = [];
     let cols = [];
@@ -202,7 +214,8 @@ function generateSudokuMatrix() {
     ];
 
     for (let i = 0; i < 9; i++) {
-        let noOfItemsInGrid = Math.floor(Math.random() * 8) + 3;
+
+        let noOfItemsInGrid = getRandomNumberInRange(range.minRange, range.maxRange + 1);
         let j = 0;
         while (j < noOfItemsInGrid) {
             let num = getRandomNumberInRange(1, 9);
@@ -232,7 +245,8 @@ function isValidPlacement(rows, cols, grids, row, col, gridNum, num) {
 
 function initSudokuBoard() {
     let sudokuBoard = document.getElementById('game');
-    generateSudokuMatrix();
+    generateSudokuMatrix('easy');
+
     for (let i = 0; i < 9; i++) {
 
         let sudokuRow = getSudokuRow();
