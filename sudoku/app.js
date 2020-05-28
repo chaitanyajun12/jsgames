@@ -5,6 +5,10 @@ const RIGHT = 39;
 const BACKSPACE = 8;
 const DELETE = 46;
 
+const Easy = 'easy';
+const Medium = 'medium';
+const Hard = 'hard';
+
 var sudokuMatrix = [];
 var currX = 0, currY = 0;
 
@@ -174,18 +178,18 @@ function getRandomNumberInRange(min, max) {
 }
 
 function getDifficultyRange(gameDifficulty) {
-    if (gameDifficulty == 'easy') {
+    // Easy - 3 to 8 filled
+    // Medium - 2 to 5 filled
+    // Hard - 1 to 3 filled
+    if (gameDifficulty == Easy) {
         return { minRange: 3, maxRange: 8, minNum: 3 };
-    } else if (gameDifficulty == 'medium') {
+    } else if (gameDifficulty == Medium) {
         return { minRange: 2, maxRange: 5, minNum: 2};
-    } else if (gameDifficulty == 'hard') {
+    } else if (gameDifficulty == Hard) {
         return { minRange: 1, maxRange: 3, minNum: 0};
     }
 }
 
-// Easy - 3 to 8 filled
-// Medium - 2 to 5 filled
-// Hard - 1 to 3 filled
 function generateSudokuMatrix(gameDifficulty) {
     initSudokuMatrix();
 
@@ -216,8 +220,11 @@ function generateSudokuMatrix(gameDifficulty) {
     for (let i = 0; i < 9; i++) {
 
         let noOfItemsInGrid = getRandomNumberInRange(range.minRange, range.maxRange + 1);
+        
         let j = 0;
-        while (j < noOfItemsInGrid) {
+        let minCount = 0;
+
+        while (minCount < range.minNum || j < noOfItemsInGrid) {
             let num = getRandomNumberInRange(1, 9);
 
             let range = indices[i];
@@ -228,7 +235,8 @@ function generateSudokuMatrix(gameDifficulty) {
                 rows[row].push(num);
                 cols[col].push(num);
                 grids[i].push(num);
-                sudokuMatrix[row][col] = num;                
+                sudokuMatrix[row][col] = num;  
+                minCount += 1;              
             }
 
             j += 1;
@@ -245,7 +253,7 @@ function isValidPlacement(rows, cols, grids, row, col, gridNum, num) {
 
 function initSudokuBoard() {
     let sudokuBoard = document.getElementById('game');
-    generateSudokuMatrix('easy');
+    generateSudokuMatrix(Easy);
 
     for (let i = 0; i < 9; i++) {
 
