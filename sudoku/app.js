@@ -36,6 +36,7 @@ function getLabel(row, col, num) {
 
 function setLabel(row, col, num) {
     let label = document.getElementById(getLabelId(row, col));
+    label.className = 'user-input';
     label.innerHTML = num;
 }
 
@@ -168,7 +169,10 @@ function initSudokuMatrix() {
     for (let i = 0; i < 9; i++) {
         sudokuMatrix[i] = [] 
         for (let j = 0; j < 9; j++) {
-            sudokuMatrix[i][j] = 0;
+            sudokuMatrix[i][j] = {
+                input: false,
+                num: 0
+            };
         }
     }
 }
@@ -235,7 +239,10 @@ function generateSudokuMatrix(gameDifficulty) {
                 rows[row].push(num);
                 cols[col].push(num);
                 grids[i].push(num);
-                sudokuMatrix[row][col] = num;  
+                sudokuMatrix[row][col] = {
+                    input: true,
+                    num: num
+                };  
                 minCount += 1;              
             }
 
@@ -260,7 +267,7 @@ function initSudokuBoard() {
         let sudokuRow = getSudokuRow();
         for (let j = 0; j < 9; j++) {
         
-            let data = sudokuMatrix[i][j] == 0 ? '' : sudokuMatrix[i][j];
+            let data = sudokuMatrix[i][j].num == 0 ? '' : sudokuMatrix[i][j].num;
             let sudokuBlock = getSudokuBlock(i, j, data);
             sudokuRow.appendChild(sudokuBlock);
 

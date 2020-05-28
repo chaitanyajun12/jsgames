@@ -26,6 +26,12 @@ h1 {
 
 .number {
     font-size: 42px;
+    color: black;
+}
+
+.user-input {
+    color: darkcyan;
+    font-size: 42px;
 }
 
 .border {
