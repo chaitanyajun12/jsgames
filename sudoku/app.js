@@ -160,14 +160,86 @@ function getSudokuBlock(row, col, num) {
     return sudokuBlock;
 }
 
+function initSudokuMatrix() {
+    for (let i = 0; i < 9; i++) {
+        sudokuMatrix[i] = [] 
+        for (let j = 0; j < 9; j++) {
+            sudokuMatrix[i][j] = 0;
+        }
+    }
+}
+
+function getRandomNumberInRange(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// Easy - 3 to 8 filled
+// Medium - 2 to 5 filled
+// Hard - 1 to 3 filled
+function generateSudokuMatrix() {
+    initSudokuMatrix();
+
+    let rows = [];
+    let cols = [];
+    let grids = [];
+
+    for (let i = 0; i < 9; i++) {
+        rows[i] = [];
+        cols[i] = [];
+        grids[i] = [];
+    }
+
+    let indices = [
+        {row: [0, 2], col: [0, 2]},
+        {row: [0, 2], col: [3, 5]},
+        {row: [0, 2], col: [6, 8]},
+        {row: [3, 5], col: [0, 2]},
+        {row: [3, 5], col: [3, 5]},
+        {row: [3, 5], col: [6, 8]},
+        {row: [6, 8], col: [0, 2]},
+        {row: [6, 8], col: [3, 5]},
+        {row: [6, 8], col: [6, 8]},
+    ];
+
+    for (let i = 0; i < 9; i++) {
+        let noOfItemsInGrid = Math.floor(Math.random() * 8) + 3;
+        let j = 0;
+        while (j < noOfItemsInGrid) {
+            let num = getRandomNumberInRange(1, 9);
+
+            let range = indices[i];
+            let row = getRandomNumberInRange(range.row[0], range.row[1] + 1);
+            let col = getRandomNumberInRange(range.col[0], range.col[1] + 1);
+            
+            if (isValidPlacement(rows, cols, grids, row, col, i, num)) {
+                rows[row].push(num);
+                cols[col].push(num);
+                grids[i].push(num);
+                sudokuMatrix[row][col] = num;                
+            }
+
+            j += 1;
+        }
+    }
+}
+
+function isValidPlacement(rows, cols, grids, row, col, gridNum, num) {
+    if (rows[row] && rows[row].indexOf(num) >= 0) return false;
+    if (cols[col] && cols[col].indexOf(num) >= 0) return false;
+    if (grids[gridNum] && grids[gridNum].indexOf(num) >= 0) return false;
+    return true;
+}
+
 function initSudokuBoard() {
     let sudokuBoard = document.getElementById('game');
+    generateSudokuMatrix();
     for (let i = 0; i < 9; i++) {
 
         let sudokuRow = getSudokuRow();
         for (let j = 0; j < 9; j++) {
         
-            let sudokuBlock = getSudokuBlock(i, j, "");
+            let data = sudokuMatrix[i][j] == 0 ? '' : sudokuMatrix[i][j];
+            let sudokuBlock = getSudokuBlock(i, j, data);
             sudokuRow.appendChild(sudokuBlock);
 
             if (i == 0 && j == 0) {
