@@ -34,6 +34,11 @@ h1 {
     font-size: 42px;
 }
 
-.border {
-    border: 3px solid red;
+.options {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
 }
