@@ -12,7 +12,7 @@ const Hard = 'hard';
 var sudokuMatrix = [];
 var currX = 0, currY = 0;
 
-function onLoad() {
+function initSudokoGame() {
     initSudokuBoard();
 }
 
@@ -42,7 +42,7 @@ function setLabel(row, col, num) {
     label.innerHTML = num;
 
     sudokuMatrix[row][col] = num;
-    Sudoku.validateIsValidSudokuMatrix(sudokuMatrix);
+    Sudoku.isValidSudokuMatrix(sudokuMatrix);
 }
 
 function isArrowKey(keyCode) {
@@ -250,7 +250,7 @@ function generateSudokuMatrix(gameDifficulty) {
             let row = getRandomNumberInRange(range.row[0], range.row[1] + 1);
             let col = getRandomNumberInRange(range.col[0], range.col[1] + 1);
             
-            if (isValidPlacement(rows, cols, grids, row, col, i, num)) {
+            if (Sudoku.isValidPlacement(rows, cols, grids, row, col, i, num)) {
                 rows[row].push(num);
                 cols[col].push(num);
                 grids[i].push(num);
@@ -264,13 +264,6 @@ function generateSudokuMatrix(gameDifficulty) {
             j += 1;
         }
     }
-}
-
-function isValidPlacement(rows, cols, grids, row, col, gridNum, num) {
-    if (rows[row] && rows[row].indexOf(num) >= 0) return false;
-    if (cols[col] && cols[col].indexOf(num) >= 0) return false;
-    if (grids[gridNum] && grids[gridNum].indexOf(num) >= 0) return false;
-    return true;
 }
 
 function initSudokuBoard() {
