@@ -40,6 +40,9 @@ function setLabel(row, col, num) {
     let label = document.getElementById(getLabelId(row, col, false));
     label.className = 'user-input';
     label.innerHTML = num;
+
+    sudokuMatrix[row][col] = num;
+    Sudoku.validateIsValidSudokuMatrix(sudokuMatrix);
 }
 
 function isArrowKey(keyCode) {
@@ -102,7 +105,7 @@ function onKeyUp(event) {
 }
 
 function selectSudokuBlock(sudokuBlock) {
-    sudokuBlock.style.backgroundColor = 'lightgrey';
+    sudokuBlock.style.backgroundColor = '#87CEFA';
 }
 
 function drawBordersBasedOnRowAndCols(sudokuBlock) {

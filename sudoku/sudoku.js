@@ -1,13 +1,13 @@
 class Sudoku {
-    validateIsValidSudokuMatrix(sudokuMatrix) {
+    static validateIsValidSudokuMatrix(sudokuMatrix) {
 
     }
     
-    solveSudokuMatrix(sudokuMatrix) {
+    static solveSudokuMatrix(sudokuMatrix) {
     
     }
 
-    getHint(sudokuMatrix) {
+    static getHint(sudokuMatrix) {
 
     }
 }
