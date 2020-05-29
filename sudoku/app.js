@@ -22,20 +22,22 @@ function getSudokuRow() {
     return sudokuRow;
 }
 
-function getLabelId(row, col) {
-    return 'label-row-' + row + '-col-' + col;
+function getLabelId(row, col, isInput) {
+    let input = isInput ? '-input' : '';
+    return 'label-row-' + row + '-col-' + col + input;
 }
 
 function getLabel(row, col, num) {
     let label = document.createElement('label');
-    label.id = getLabelId(row, col);
+    let isInput = num != 0;
+    label.id = getLabelId(row, col, isInput);
     label.className = 'number';
     label.innerHTML = num;
     return label;
 }
 
 function setLabel(row, col, num) {
-    let label = document.getElementById(getLabelId(row, col));
+    let label = document.getElementById(getLabelId(row, col, false));
     label.className = 'user-input';
     label.innerHTML = num;
 }
@@ -52,21 +54,31 @@ function isBackspaceOrDelete(keyCode) {
     return keyCode == BACKSPACE || keyCode == DELETE;
 }
 
+function setSudokuBlockValue(row, col, data, isInput) {
+    if (isInput)
+        return;
+
+    setLabel(row, col, data, isInput);
+}
+
 function onKeyUp(event) {
+    let sudokuBlock = document.getElementById(getSudokuBlockId(currX, currY));
+    let label = sudokuBlock.firstElementChild.id;
+    let isInput = label.indexOf('input') >= 0;
+
     if (isSudokuNumKey(event.keyCode)) {
-        setLabel(currX, currY, String.fromCharCode(event.keyCode));
+        setSudokuBlockValue(currX, currY, String.fromCharCode(event.keyCode), isInput);
         return;
     }
 
     if (isBackspaceOrDelete(event.keyCode)) {
-        setLabel(currX, currY, '');
+        setSudokuBlockValue(currX, currY, '', isInput);
         return;
     }
 
     if (!isArrowKey(event.keyCode))
         return;
 
-    let sudokuBlock = document.getElementById(getSudokuBlockId(currX, currY));
     unSelectSudokuBlock(sudokuBlock);
 
     if (event.keyCode == UP) {
