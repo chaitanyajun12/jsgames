@@ -41,7 +41,10 @@ function setLabel(row, col, num) {
     label.className = 'user-input';
     label.innerHTML = num;
 
-    sudokuMatrix[row][col] = num;
+    sudokuMatrix[row][col] = {
+        input: false,
+        num: parseInt(num)
+    };
     Sudoku.isValidSudokuMatrix(sudokuMatrix);
 }
 

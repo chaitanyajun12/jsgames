@@ -32,17 +32,18 @@ class Sudoku {
             for (let row = range.row[0]; row <= range.row[1]; row++) {
                 for (let col = range.col[0]; col <= range.col[1]; col++) {
 
-                    if (sudokuMatrix[row][col] == 0) {
+                    let block = sudokuMatrix[row][col];
+                    if (block.num == 0) {
                         return false;
                     }
 
-                    if (!this.isValidPlacement(rows, cols, grids, row, col, i, sudokuMatrix[row][col])) {
+                    if (!this.isValidPlacement(rows, cols, grids, row, col, i, block.num)) {
                         return false;
                     }
 
-                    rows[row].push(sudokuMatrix[row][col]);
-                    cols[col].push(sudokuMatrix[row][col]);
-                    grids[i].push(sudokuMatrix[row][col]);
+                    rows[row].push(block.num);
+                    cols[col].push(block.num);
+                    grids[i].push(block.num);
                 }
             }
         }
