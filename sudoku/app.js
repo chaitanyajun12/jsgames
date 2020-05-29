@@ -13,6 +13,7 @@ var sudokuMatrix = [];
 var currX = 0, currY = 0;
 
 function initSudokoGame() {
+    initOptions();
     initSudokuBoard();
 }
 
@@ -267,6 +268,21 @@ function generateSudokuMatrix(gameDifficulty) {
             j += 1;
         }
     }
+}
+
+function initOptions() {
+    let options = document.getElementById('options');
+    options.onclick = (event) => {
+        let optionsDialog = document.getElementById('options-dialog');
+        let closeOptionsDialog = document.getElementById('options-dialog-close');
+        closeOptionsDialog.onclick = (event) => {
+            optionsDialog.style.visibility = 'hidden';
+            options.style.visibility = 'visible';
+        }
+
+        optionsDialog.style.visibility = 'visible';
+        options.style.visibility = 'hidden';
+    };
 }
 
 function initSudokuBoard() {
