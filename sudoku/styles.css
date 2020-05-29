@@ -28,11 +28,13 @@ h1 {
 .number {
     font-size: 42px;
     color: black;
+    font-family: Cambria;
 }
 
 .user-input {
     color: darkcyan;
     font-size: 42px;
+    font-family: Cambria;
 }
 
 .options {
