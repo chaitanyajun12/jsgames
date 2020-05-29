@@ -292,4 +292,5 @@ function initSudokuBoard() {
     }
 
     window.addEventListener('keyup', onKeyUp);
+    window.addEventListener('selectstart', event => event.preventDefault());
 }
