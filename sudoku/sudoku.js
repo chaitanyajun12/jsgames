@@ -60,6 +60,34 @@ class Sudoku {
     
     }
 
+    static getErrorSudokuBlocks(sudokuMatrix, currRow, currCol) {
+        let block = sudokuMatrix[currRow][currCol];
+        let num = block.num;
+        let rowBlock, colBlock;
+        let errorBlocks = [];
+
+        for (let i = 0; i < 9; i++) {
+            rowBlock = sudokuMatrix[i][currCol];
+            colBlock = sudokuMatrix[currRow][i];
+
+            if (rowBlock.num == num) {
+                errorBlocks.push({
+                    row: i,
+                    col: currCol
+                });
+            }
+
+            if (colBlock.num == num) {
+                errorBlocks.push({
+                    row: currRow,
+                    col: i
+                });
+            }
+        }
+
+        return errorBlocks;
+    }
+
     static getHint(sudokuMatrix) {
 
     }
