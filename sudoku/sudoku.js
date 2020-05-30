@@ -1,3 +1,15 @@
+var indices = [
+    {row: [0, 2], col: [0, 2]},
+    {row: [0, 2], col: [3, 5]},
+    {row: [0, 2], col: [6, 8]},
+    {row: [3, 5], col: [0, 2]},
+    {row: [3, 5], col: [3, 5]},
+    {row: [3, 5], col: [6, 8]},
+    {row: [6, 8], col: [0, 2]},
+    {row: [6, 8], col: [3, 5]},
+    {row: [6, 8], col: [6, 8]},
+];
+
 class Sudoku {
     static isValidSudokuMatrix(sudokuMatrix) {
         if (!sudokuMatrix) {
@@ -13,18 +25,6 @@ class Sudoku {
             cols[i] = [];
             grids[i] = [];
         }
-
-        let indices = [
-            {row: [0, 2], col: [0, 2]},
-            {row: [0, 2], col: [3, 5]},
-            {row: [0, 2], col: [6, 8]},
-            {row: [3, 5], col: [0, 2]},
-            {row: [3, 5], col: [3, 5]},
-            {row: [3, 5], col: [6, 8]},
-            {row: [6, 8], col: [0, 2]},
-            {row: [6, 8], col: [3, 5]},
-            {row: [6, 8], col: [6, 8]},
-        ];
 
         for (let i = 0; i < 9; i++) {
 
@@ -60,6 +60,16 @@ class Sudoku {
     
     }
 
+    static getSudokuGridCoordinates(row, col) {
+        for (let i = 0; i < indices.length; i++) {
+            let coordinates = indices[i];
+            if (row >= coordinates.row[0] && row <= coordinates.row[1] 
+                && col >= coordinates.col[0] && col <= coordinates.col[1]) {
+                return coordinates;
+            }
+        }
+    }
+
     static getErrorSudokuBlocks(sudokuMatrix, currRow, currCol) {
         let block = sudokuMatrix[currRow][currCol];
         let num = block.num;
@@ -82,6 +92,18 @@ class Sudoku {
                     row: currRow,
                     col: i
                 });
+            }
+        }
+
+        let gridCoordinates = this.getSudokuGridCoordinates(currRow, currCol);
+        for (let i = gridCoordinates.row[0]; i <= gridCoordinates.row[1]; i++) {
+            for (let j = gridCoordinates.col[0]; j <= gridCoordinates.col[1]; j++) {
+                if (sudokuMatrix[i][j].num == num) {
+                    errorBlocks.push({
+                        row: i,
+                        col: j
+                    });
+                }
             }
         }
 
