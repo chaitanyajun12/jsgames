@@ -11,6 +11,7 @@ const Hard = 'hard';
 
 var sudokuMatrix = [];
 var currX = 0, currY = 0;
+var errorSudokuBlocks = [];
 
 function initSudokoGame() {
     initOptions();
@@ -37,6 +38,20 @@ function getLabel(row, col, num) {
     return label;
 }
 
+function resetErrorSudokoBlocks(row, col) {
+    for (let i = 0; i < errorSudokuBlocks.length; i++) {
+        let block = document.getElementById(getSudokuBlockId(errorSudokuBlocks[i].row, errorSudokuBlocks[i].col));
+        if (errorSudokuBlocks[i].row == row && errorSudokuBlocks[i].col == col) {
+            selectSudokuBlock(block);
+            continue;
+        }
+
+        unSelectSudokuBlock(block);
+    }
+
+    errorSudokuBlocks = [];
+}
+
 function setLabel(row, col, num) {
     let label = document.getElementById(getLabelId(row, col, false));
     label.className = 'user-input';
@@ -46,6 +61,20 @@ function setLabel(row, col, num) {
         input: false,
         num: parseInt(num)
     };
+
+    resetErrorSudokoBlocks(row, col);
+    errorSudokuBlocks = Sudoku.getErrorSudokuBlocks(sudokuMatrix, currX, currY);
+    if (errorSudokuBlocks && errorSudokuBlocks.length > 0) {
+        for (let i = 0; i < errorSudokuBlocks.length; i++) {
+            let id = getSudokuBlockId(errorSudokuBlocks[i].row, errorSudokuBlocks[i].col);
+            let block = document.getElementById(id);
+            block.style.backgroundColor = 'pink';
+        }
+        label.className = 'error-input';
+    } else {
+        label.className = 'user-input';
+    }
+
     Sudoku.isValidSudokuMatrix(sudokuMatrix);
 }
 
@@ -86,7 +115,9 @@ function onKeyUp(event) {
     if (!isArrowKey(event.keyCode))
         return;
 
-    unSelectSudokuBlock(sudokuBlock);
+    if (!isSudokuErrorBlock(sudokuBlock)) {
+        unSelectSudokuBlock(sudokuBlock);
+    }
 
     if (event.keyCode == UP) {
         currX = currX - 1;
@@ -138,6 +169,16 @@ function drawBordersBasedOnRowAndCols(sudokuBlock) {
     }
 }
 
+function isSudokuErrorBlock(sudokuBlock) {
+    let rowcol = getRowColFromSudokuBlockId(sudokuBlock.id);
+    for (let i = 0; i < errorSudokuBlocks.length; i++) {
+        if (rowcol.row == errorSudokuBlocks[i].row && rowcol.col == errorSudokuBlocks[i].col) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function unSelectSudokuBlock(sudokuBlock) {
     sudokuBlock.style.backgroundColor = 'aliceblue';
     drawBordersBasedOnRowAndCols(sudokuBlock);
@@ -146,8 +187,8 @@ function unSelectSudokuBlock(sudokuBlock) {
 function getRowColFromSudokuBlockId(id) {
     let tokens = id.split('-');
     return {
-        row: tokens[1],
-        col: tokens[3]
+        row: parseInt(tokens[1]),
+        col: parseInt(tokens[3])
     };
 }
 
@@ -165,7 +206,10 @@ function onSudokuBlockClick(event) {
     if (currX == rowCol.row && currY == rowCol.col)
         return;
 
-    unSelectSudokuBlock(document.getElementById(getSudokuBlockId(currX, currY)));
+    let sudokuBlock = document.getElementById(getSudokuBlockId(currX, currY));
+    if (!isSudokuErrorBlock(sudokuBlock)) {
+        unSelectSudokuBlock(sudokuBlock);
+    }
     selectSudokuBlock(document.getElementById(id));
 
     currX = rowCol.row;

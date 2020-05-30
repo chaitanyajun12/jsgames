@@ -70,6 +70,15 @@ class Sudoku {
         }
     }
 
+    static errorBlockExists(errorBlocks, row, col) {
+        for (let i = 0; i < errorBlocks.length; i++) {
+            if (errorBlocks[i].row == row && errorBlocks[i].col == col) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static getErrorSudokuBlocks(sudokuMatrix, currRow, currCol) {
         let block = sudokuMatrix[currRow][currCol];
         let num = block.num;
@@ -80,14 +89,14 @@ class Sudoku {
             rowBlock = sudokuMatrix[i][currCol];
             colBlock = sudokuMatrix[currRow][i];
 
-            if (rowBlock.num == num) {
+            if (rowBlock.num == num && !this.errorBlockExists(errorBlocks, i, currCol)) {
                 errorBlocks.push({
                     row: parseInt(i),
                     col: parseInt(currCol)
                 });
             }
 
-            if (colBlock.num == num) {
+            if (colBlock.num == num && !this.errorBlockExists(errorBlocks, currRow, i)) {
                 errorBlocks.push({
                     row: parseInt(currRow),
                     col: parseInt(i)
@@ -98,13 +107,17 @@ class Sudoku {
         let gridCoordinates = this.getSudokuGridCoordinates(currRow, currCol);
         for (let i = gridCoordinates.row[0]; i <= gridCoordinates.row[1]; i++) {
             for (let j = gridCoordinates.col[0]; j <= gridCoordinates.col[1]; j++) {
-                if (sudokuMatrix[i][j].num == num) {
+                if (sudokuMatrix[i][j].num == num && !this.errorBlockExists(errorBlocks, i, j)) {
                     errorBlocks.push({
                         row: parseInt(i),
                         col: parseInt(j)
                     });
                 }
             }
+        }
+
+        if (errorBlocks.length == 1 && errorBlocks[0].row == currRow && errorBlocks[0].col == currCol) {
+            errorBlocks = [];
         }
 
         return errorBlocks;
