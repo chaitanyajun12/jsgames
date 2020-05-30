@@ -82,15 +82,15 @@ class Sudoku {
 
             if (rowBlock.num == num) {
                 errorBlocks.push({
-                    row: i,
-                    col: currCol
+                    row: parseInt(i),
+                    col: parseInt(currCol)
                 });
             }
 
             if (colBlock.num == num) {
                 errorBlocks.push({
-                    row: currRow,
-                    col: i
+                    row: parseInt(currRow),
+                    col: parseInt(i)
                 });
             }
         }
@@ -100,8 +100,8 @@ class Sudoku {
             for (let j = gridCoordinates.col[0]; j <= gridCoordinates.col[1]; j++) {
                 if (sudokuMatrix[i][j].num == num) {
                     errorBlocks.push({
-                        row: i,
-                        col: j
+                        row: parseInt(i),
+                        col: parseInt(j)
                     });
                 }
             }
