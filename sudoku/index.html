@@ -13,10 +13,15 @@
 		<div class="options-dialog" id="options-dialog">
 			<img id="options-dialog-close" src="./images/close.svg" class="options-dialog-close" />
 			<div>
-				<button class="option">New game</button>
-				<button class="option">Reset</button>
-				<button class="option">Hint</button>
+				<button class="game-option" id="newgame">New game</button>
+				<select class="game-option hide" id="difficulty">
+					<option id="easy" selected>Easy</option>
+					<option id="medium">Medium</option>
+					<option id="hard">Hard</option>
+				</select>
+				<button class="game-option" id="solve">Solve it!</button>
 			</div>
+			<a href="https://github.com/chaitanyajun12/jsgames/issues" target="_blank" class="bugs"></a>
 		</div>
 	</body>
 </html>

@@ -15,7 +15,7 @@ var errorSudokuBlocks = [];
 
 function initSudokoGame() {
     initOptions();
-    initSudokuBoard();
+    initSudokuBoard(Easy);
 }
 
 function getSudokuRow() {
@@ -322,16 +322,29 @@ function initOptions() {
         closeOptionsDialog.onclick = (event) => {
             optionsDialog.style.visibility = 'hidden';
             options.style.visibility = 'visible';
-        }
+            gameDifficulty.style.display = 'none';
+        };
 
         optionsDialog.style.visibility = 'visible';
         options.style.visibility = 'hidden';
+        
+        let newgame = document.getElementById('newgame');
+        let gameDifficulty = document.getElementById('difficulty');
+        newgame.onclick = (event) => {
+            gameDifficulty.style.display = 'block';
+        };
+
+        gameDifficulty.onchange = (event) => {
+            document.getElementById('game').innerHTML = '';
+            initSudokuBoard(event.target[event.target.selectedIndex].id);
+            closeOptionsDialog.click();
+        }
     };
 }
 
-function initSudokuBoard() {
+function initSudokuBoard(gameDifficulty) {
     let sudokuBoard = document.getElementById('game');
-    generateSudokuMatrix(Easy);
+    generateSudokuMatrix(gameDifficulty);
 
     for (let i = 0; i < 9; i++) {
 
